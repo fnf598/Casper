@@ -11,31 +11,7 @@ provider "aws" {
   region = "us-west-1"
 }
 
-##Compliant 1
-
-resource "aws_iam_policy" "policy" {
-  name        = "test_policy"
-  path        = "/"
-  description = "My test policy"
-
-  # Terraform's "jsonencode" function converts a
-  # Terraform expression result to valid JSON syntax.
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = [
-          "iam:*"
-        ]
-        Effect   = "Deny"
-        Resource = "*"
-      },
-    ]
-  })
-}
-
-
-# ##Compliant 2
+# ##Compliant 1
 
 # resource "aws_iam_policy" "policy" {
 #   name        = "test_policy"
@@ -49,14 +25,38 @@ resource "aws_iam_policy" "policy" {
 #     Statement = [
 #       {
 #         Action = [
-#           "ec2:Describe*"
+#           "iam:*"
 #         ]
-#         Effect   = "Allow"
+#         Effect   = "Deny"
 #         Resource = "*"
 #       },
 #     ]
 #   })
 # }
+
+
+##Compliant 2
+
+resource "aws_iam_policy" "policy" {
+  name        = "test_policy"
+  path        = "/"
+  description = "My test policy"
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "ec2:Describe*"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
+}
 
 # ##Compliant 3
 
